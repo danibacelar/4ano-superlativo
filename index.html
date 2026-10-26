@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Superlative Adventure</title>
+<style>
+:root{--bg:#fff7e6;--card:#fff;--ink:#2b2d42;--mut:#6b6f85;--p:#6c5ce7;--g:#00b894;--r:#e17055;--y:#fdcb6e;--b:#0984e3;--line:#e6dcc3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1b2e;--card:#2a2745;--ink:#f4f1ff;--mut:#b9b4d6;--line:#3d3963}}
+*{box-sizing:border-box}html{height:100%}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS","Comic Sans MS",system-ui,sans-serif;font-size:clamp(16px,2.2vw,20px)}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+h1{font-size:clamp(28px,6vw,48px);margin:8px 0;text-align:center;color:var(--p)}
+.sub{text-align:center;color:var(--mut);margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.menu{border:0;border-radius:22px;padding:18px;color:#fff;font:inherit;font-weight:700;text-align:left;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.2);transition:transform .1s;min-height:110px}
+.menu:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.menu .e{font-size:38px;display:block}.menu small{display:block;font-weight:400;opacity:.95;margin-top:4px}
+.menu .st{float:right;font-size:18px}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.home{border:0;background:var(--p);color:#fff;border-radius:50px;padding:10px 18px;font:inherit;font-weight:700;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.bar{flex:1;height:16px;background:var(--line);border-radius:10px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--g);transition:width .3s}
+.card{background:var(--card);border-radius:24px;padding:clamp(16px,4vw,32px);box-shadow:0 6px 0 var(--line);text-align:center}
+.card h2{margin:0 0 10px;color:var(--p)}
+.q{font-size:clamp(22px,5vw,34px);font-weight:700;margin:10px 0 18px}
+.opts{display:grid;gap:10px}
+.opt,.btn,.chip{border:3px solid var(--line);background:var(--card);color:var(--ink);border-radius:16px;padding:14px;font:inherit;font-weight:700;cursor:pointer}
+.opt:hover,.chip:hover{border-color:var(--p)}
+.btn{background:var(--g);border-color:var(--g);color:#fff;margin-top:14px;padding:14px 28px;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.opt.ok,.ans.ok{background:var(--g);border-color:var(--g);color:#fff}
+.opt.no,.ans.no{background:var(--r);border-color:var(--r);color:#fff}
+.two{grid-template-columns:1fr 1fr}
+input{font:inherit;font-size:1.2em;padding:12px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--ink);text-align:center;width:min(100%,320px)}
+.fb{min-height:60px;margin-top:12px;font-weight:700;font-size:1.1em}
+.slot{min-height:58px;border:3px dashed var(--line);border-radius:16px;padding:8px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
+.pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip{padding:10px 14px;border-color:var(--y);background:var(--y);color:#2b2d42}
+.box{background:var(--bg);border-radius:16px;padding:12px;margin:10px 0;text-align:left;border:2px solid var(--line)}
+.box b{color:var(--p)}.hl{color:var(--r);font-weight:700}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.92em}td,th{padding:8px;border-bottom:2px solid var(--line);text-align:left}
+.big{font-size:64px}
+.tf{display:flex;gap:12px;justify-content:center;align-items:center;font-size:1.4em;margin:10px 0;flex-wrap:wrap}.tf span{color:var(--mut)}.tf .b{color:var(--g);animation:pop .8s}.sent{background:var(--bg);border-radius:14px;padding:10px;animation:fade 1.4s}@keyframes pop{0%{opacity:0;transform:scale(.2)}70%{transform:scale(1.25)}100%{opacity:1;transform:scale(1)}}@keyframes fade{0%,50%{opacity:0}100%{opacity:1}}
+@media (max-width:520px){.two{grid-template-columns:1fr}}
+</style></head><body><div class="wrap" id="app"></div>
+<script>
+var app=document.getElementById("app"),stars={},G={};
+function sh(a){return a.slice().sort(function(){return Math.random()-.5})}
+function $(h){var d=document.createElement("div");d.innerHTML=h;return d}
+var MENU=[
+["info","📖","1. O que é superlativo?","Aprenda como e quando usar","#6c5ce7"],
+["rules","🧩","2. -est ou the most?","Descubra qual regra usar","#e17055"],
+["trans","✏️","3. Transforme as palavras","good → best, tall → tallest","#00b894"],
+["order","🔤","4. Organize a frase","Monte frases com superlativo","#0984e3"],
+["conv","🔄","5. Comparativo → Superlativo","Mude a frase","#d63384"],
+["id","🔎","6. Qual é qual?","Comparativo ou superlativo?","#e1a100"]];
+function menu(){
+ var h='<h1>🌟 Superlative Adventure 🌟</h1><p class="sub">Escolha uma aventura e ganhe estrelas!</p><div class="grid">';
+ MENU.forEach(function(m){h+='<button class="menu" style="background:'+m[4]+'" onclick="go(\''+m[0]+'\')"><span class="st">'+("⭐".repeat(stars[m[0]]||0))+'</span><span class="e">'+m[1]+'</span>'+m[2]+'<small>'+m[3]+'</small></button>'});
+ app.innerHTML=h+'</div>';window.scrollTo(0,0)}
+function tb(p){return '<div class="top"><button class="home" onclick="menu()">🏠 Menu</button><div class="bar"><i id="pb" style="width:'+p+'%"></i></div></div>'}
+function go(id){G={id:id,i:0,s:0};if(id=="info")return info(0);if(id=="rules"||id=="conv"||id=="id"||id=="trans"||id=="order")return intro()}
+
+/* 1 - explicação */
+var INFO=[
+["O que é superlativo? 🏆","<p>Superlativo serve para dizer que alguém ou algo é <b>o número 1</b> em um grupo: o mais alto, o maior, o mais bonito!</p><div class='box'>🐘 The elephant is <span class='hl'>the biggest</span> animal.<br>(O elefante é o <b>maior</b> animal.)</div>"],
+["Como usamos? 🛠️","<p>Usamos <b>the</b> + adjetivo com <b>-est</b>, ou <b>the most</b> + adjetivo.</p><div class='box'>🦒 tall → <span class='hl'>the tallest</span><br>🌺 beautiful → <span class='hl'>the most beautiful</span><br>👍 good → <span class='hl'>the best</span></div><p>Sempre vem o <b>the</b> antes!</p>"],
+["Quando usamos? ⏰","<p>Quando comparamos <b>3 ou mais</b> coisas.</p><div class='box'>Comparativo (2 coisas):<br>Tom is <b>taller than</b> Ben.<br><br>Superlativo (3 ou mais):<br>Tom is <span class='hl'>the tallest</span> boy in the class.</div>"],
+["Vamos treinar! 🎉","<p>Agora você já sabe! Superlativo = <b>the</b> + <b>-est</b> ou <b>the most</b>.</p><div class='box'>🏔️ Everest is <span class='hl'>the tallest</span> mountain.<br>🐋 The whale is <span class='hl'>the biggest</span> animal.<br>👸 She is <span class='hl'>the most beautiful</span> princess.</div><p>Volte ao menu e escolha um jogo!</p>"]];
+function info(n){var d=INFO[n];
+ app.innerHTML=tb((n+1)/INFO.length*100)+'<div class="card"><h2>'+d[0]+'</h2><div style="text-align:left">'+d[1]+'</div>'+(n>0?'<button class="btn" style="background:var(--b)" onclick="info('+(n-1)+')">⬅ Voltar</button> ':'')+(n<INFO.length-1?'<button class="btn" onclick="info('+(n+1)+')">Próximo ➡</button>':'<button class="btn" onclick="stars.info=3;menu()">Concluir 🎉</button>')+'</div>'}
+
+/* dados */
+var RULES=[["tall","est","tall","tallest","The giraffe is the tallest animal."],["big","est","big","biggest","The elephant is the biggest animal."],["fast","est","fast","fastest","The cheetah is the fastest animal."],["small","est","small","smallest","The ant is the smallest insect."],["long","est","long","longest","The snake is the longest animal."],["cold","est","cold","coldest","Ice is the coldest thing."],["happy","est","hap·py","happiest","She is the happiest girl."],["funny","est","fun·ny","funniest","He is the funniest boy."],["beautiful","most","beau·ti·ful","most beautiful","She is the most beautiful girl."],["expensive","most","ex·pen·sive","most expensive","This is the most expensive car."],["dangerous","most","dan·ger·ous","most dangerous","The shark is the most dangerous fish."],["interesting","most","in·ter·est·ing","most interesting","This is the most interesting book."],["delicious","most","de·li·cious","most delicious","Pizza is the most delicious food."],["important","most","im·por·tant","most important","Water is the most important thing."]];
+var TR=[["good","best"],["tall","tallest"],["big","biggest"],["beautiful","most beautiful"],["happy","happiest"],["bad","worst"],["large","largest"],["fast","fastest"],["funny","funniest"],["interesting","most interesting"],["small","smallest"],["short","shortest"],["hot","hottest"],["old","oldest"],["delicious","most delicious"],["important","most important"]];
+var OR=[["She","is","the","most","beautiful","girl"],["The","elephant","is","the","biggest","animal"],["He","is","the","tallest","boy","in","the","class"],["This","is","the","best","pizza","ever"],["Mount","Everest","is","the","highest","mountain"],["Math","is","the","most","difficult","subject"],["The","cheetah","is","the","fastest","animal"],["Lucas","is","the","smallest","student"],["Pizza","is","the","most","delicious","food"],["The","blue","whale","is","the","biggest","animal"]];
+var CV=[["The giraffe is taller than the zebra.","The giraffe is the tallest animal.","The giraffe is the most tall animal.","The giraffe is the taller animal."],
+["The whale is bigger than the shark.","The whale is the biggest animal in the sea.","The whale is the bigger animal in the sea.","The whale is the most big animal."],
+["Ana is more beautiful than Bia.","Ana is the most beautiful girl.","Ana is the beautifulest girl.","Ana is the more beautiful girl."],
+["This book is better than that book.","This is the best book.","This is the goodest book.","This is the most good book."],
+["My dog is faster than your dog.","My dog is the fastest dog.","My dog is the most fast dog.","My dog is the faster dog."],
+["Math is more difficult than Art.","Math is the most difficult subject.","Math is the difficultest subject.","Math is the more difficult subject."],
+["Pedro is funnier than Leo.","Pedro is the funniest boy.","Pedro is the most funny boy.","Pedro is the funnyest boy."],
+["Leo is stronger than Caio.","Leo is the strongest boy.","Leo is the most strong boy.","Leo is the stronger boy."],
+["This car is more expensive than that car.","This is the most expensive car.","This is the expensivest car.","This is the more expensive car."],
+["Summer is hotter than spring.","Summer is the hottest season.","Summer is the most hot season.","Summer is the hoter season."]];
+var ID=[["Tom is taller than Ben.","C"],["She is the most beautiful girl.","S"],["The elephant is bigger than the lion.","C"],["This is the biggest cake!","S"],["My book is more interesting than your book.","C"],["He is the tallest boy in the class.","S"],["A car is faster than a bike.","C"],["Everest is the highest mountain.","S"],["Ana is the best student.","S"],["Pizza is better than soup.","C"],["Lucy is smaller than Ann.","C"],["This is the most dangerous animal.","S"],["Summer is hotter than winter.","C"],["She is the happiest girl!","S"],["A dog is more friendly than a cat.","C"],["That was the funniest joke!","S"]];
+var TX=[{s:"My family is big. My dad is *the tallest* person. My brother is *the funniest* boy.",c:"My family is big. My dad is *taller than* my mom. My brother is *funnier than* me."},
+{s:"The zoo has many animals. The elephant is *the biggest*. The cheetah is *the fastest*.",c:"At the zoo, the elephant is *bigger than* the monkey. The cheetah is *faster than* the turtle."},
+{s:"Ana is *the best* student in my class. She is also *the most intelligent* girl.",c:"Ana is *better than* Bia in math. She is also *more intelligent than* Leo."},
+{s:"Pizza is *the most delicious* food. Ice cream is *the coldest* dessert.",c:"Pizza is *more delicious than* soup. Ice cream is *colder than* cake."},
+{s:"Look at these mountains. The red mountain is *the highest*. The green mountain is *the smallest*.",c:"Look at these mountains. The red mountain is *higher than* the blue one. The green mountain is *smaller than* the blue one."},
+{s:"I have three toys. The robot is *the most expensive*. The ball is *the cheapest*.",c:"I have two toys. The robot is *more expensive than* the ball. The ball is *cheaper than* the robot."},
+{s:"Summer is *the hottest* season. Winter is *the coldest* season.",c:"Summer is *hotter than* spring. Winter is *colder than* autumn."},
+{s:"Our team is great! Pedro is *the fastest* player. Leo is *the strongest* player.",c:"Pedro is *faster than* Leo. Leo is *stronger than* Caio."},
+{s:"I have three pets. My dog is *the biggest*. My cat is *the most beautiful*.",c:"I have two pets. My dog is *bigger than* my cat. My cat is *more beautiful than* my dog."},
+{s:"This is *the most interesting* movie of the year! It is *the best* movie.",c:"This movie is *more interesting than* that movie. It is *better than* the book."}];
+var DATA={rules:RULES,trans:TR,order:OR,conv:CV,id:ID};
+var INTRO={rules:"<p>Como saber qual usar? 👏 <b>Bata palmas</b> para cada pedacinho (sílaba) da palavra!</p><table><tr><td>👏 <b>1 palma</b><br>(palavra curta)</td><td>tall, big, fast</td><td>the tall<b>est</b></td></tr><tr><td>👏👏 <b>2 palmas</b> e termina em <b>y</b></td><td>hap·py, fun·ny</td><td>the happ<b>iest</b> (o y vira i)</td></tr><tr><td>👏👏👏 <b>3 ou mais palmas</b><br>(palavra comprida)</td><td>beau·ti·ful</td><td>the <b>most</b> beautiful</td></tr></table><p>Dicas: big → the big<b>gest</b> (dobra o g). large → the larg<b>est</b>. good → the best, bad → the worst.</p><p>Veja a palavra virar frase:</p><div class='tf'><span>tall</span><span>➜</span><b class='b'>the tallest</b></div><div class='sent'>The giraffe is the tallest animal.</div>",
+trans:"<p>Escreva o superlativo de cada palavra, <b>sempre com o the na frente</b>. Exemplo: tall → the tallest.</p>",order:"<p>Toque nas palavras para montar a frase na ordem certa. Toque de novo para tirar.</p>",conv:"<p>Leia a frase com <b>than</b> (comparativo) e escolha a frase em superlativo.</p>",id:"<p>Leia a frase: ela tem <b>than</b> (comparativo, 2 coisas) ou <b>the ...est / the most</b> (superlativo, 3 ou mais)?</p><p>Depois vem a <b>hora da leitura</b>: dois textinhos e você descobre qual está no superlativo e qual está no comparativo!</p>"};
+function intro(){var m=MENU.filter(function(x){return x[0]==G.id})[0];
+ app.innerHTML=tb(0)+'<div class="card"><div class="big">'+m[1]+'</div><h2>'+m[2]+'</h2><div style="text-align:left">'+INTRO[G.id]+'</div><button class="btn" onclick="start()">Começar! 🚀</button></div>'}
+function start(){G.q=G.id=="id"?sh(ID).slice(0,14).concat(sh(TX).slice(0,10)):sh(DATA[G.id]).slice(0,{rules:14,trans:14,order:10,conv:10}[G.id]);G.i=0;G.s=0;show()}
+function show(){
+ if(G.i>=G.q.length)return end();
+ var q=G.q[G.i],h=tb(G.i/G.q.length*100)+'<div class="card" id="c">',id=G.id;
+ if(id=="rules"){h+='<div class="q">the ___ <span class="hl">'+q[0]+'</span></div><p>👏 '+q[2]+' ➜ <b>'+q[2].split("·").length+' sílaba(s)</b></p><div class="opts two"><button class="opt" onclick="pick(this,\'est\')">-est<br>(the tallest)</button><button class="opt" onclick="pick(this,\'most\')">the most<br>(the most beautiful)</button></div>'}
+ if(id=="trans"){h+='<div class="q">'+q[0]+' → ______</div><input id="in" autocomplete="off" autocapitalize="none" placeholder="the ..."><br><button class="btn" onclick="chk()">Conferir ✅</button>'}
+ if(id=="order"){G.pl=[];h+='<div class="slot" id="sl"></div><div class="pool" id="pl"></div><button class="btn" onclick="chk()">Conferir ✅</button>'}
+ if(id=="conv"){G.o=sh([1,2,3]);h+='<div class="q">'+q[0]+'</div><p>Qual é o superlativo?</p><div class="opts">'+G.o.map(function(k){return '<button class="opt" onclick="pick(this,'+k+')">'+q[k]+'</button>'}).join("")+'</div>'}
+ if(id=="id"&&q.s){h+=txt(q)}if(id=="id"&&!q.s){h+='<div class="q">'+q[0]+'</div><div class="opts two"><button class="opt" onclick="pick(this,\'C\')">⚖️ Comparativo<br>(than)</button><button class="opt" onclick="pick(this,\'S\')">🏆 Superlativo<br>(the ...est)</button></div>'}
+ app.innerHTML=h+'<div class="fb" id="fb"></div></div>';
+ if(id=="order")chips();
+ if(id=="trans")document.getElementById("in").focus()}
+function chips(){var q=G.q[G.i];if(!G.sh)G.sh=sh(q.map(function(w,i){return i}));
+ var p=document.getElementById("pl"),s=document.getElementById("sl");p.innerHTML="";s.innerHTML="";
+ G.sh.forEach(function(i){if(G.pl.indexOf(i)<0){var b=document.createElement("button");b.className="chip";b.textContent=q[i];b.onclick=function(){G.pl.push(i);chips()};p.appendChild(b)}});
+ G.pl.forEach(function(i){var b=document.createElement("button");b.className="chip";b.style.background="var(--b)";b.style.color="#fff";b.style.borderColor="var(--b)";b.textContent=q[i];b.onclick=function(){G.pl.splice(G.pl.indexOf(i),1);chips()};s.appendChild(b)})}
+function pick(b,v){
+ var q=G.q[G.i],ok;
+ if(G.id=="rules")ok=(v==q[1]);if(G.id=="id")ok=(v==q[1]);if(G.id=="conv")ok=(v==1);
+ var all=document.querySelectorAll(".opt");all.forEach(function(x){x.disabled=true});
+ b.classList.add(ok?"ok":"no");
+ if(!ok&&G.id!="conv")all.forEach(function(x){if(x.getAttribute("onclick").indexOf("'"+q[1]+"'")>0)x.classList.add("ok")});
+ if(!ok&&G.id=="conv")all.forEach(function(x){if(x.textContent==q[1])x.classList.add("ok")});
+ res(ok,hint(q))}
+function hint(q){if(G.id=="rules")return q[1]=="est"?"Poucas palmas (1, ou 2 com y): use -est.":"Muitas palmas (3 ou mais): use the most.";if(G.id=="id")return q[1]=="C"?"Tem than: é comparativo!":"Tem the + est/most: é superlativo!";return q[1]}
+function chk(){
+ var q=G.q[G.i],ok;
+ if(G.id=="trans"){var v=document.getElementById("in").value.toLowerCase().trim().replace(/\s+/g," ");ok=(v=="the "+q[1]);res(ok,(v==q[1]?"Faltou o the! ":"")+"Resposta: the "+q[1])}
+ else{var t=G.pl.map(function(i){return q[i]}).join(" ");ok=(t==q.join(" "));res(ok,"Certo: "+q.join(" ")+".")}}
+function res(ok,h){
+ if(ok)G.s++;
+ var f=document.getElementById("fb");
+ f.innerHTML=(ok?'<span style="color:var(--g)">🎉 Muito bem! '+["Great!","Awesome!","Super!"][G.i%3]+'</span>':'<span style="color:var(--r)">😅 Quase! '+h+'</span>')+(G.id=="rules"?tf(G.q[G.i]):"")+'<br><button class="btn" onclick="G.i++;G.sh=null;show()">Próxima ➡</button>';
+ document.querySelectorAll(".btn").forEach(function(x){if(x.textContent.indexOf("Conferir")>-1)x.style.display="none"});
+ var i=document.getElementById("in");if(i)i.disabled=true;
+ var o=document.getElementById("sl");if(o)o.className="slot ans "+(ok?"ok":"no")}
+function tf(q){return '<div class="tf"><span>'+q[0]+'</span><span>➜</span><b class="b">the '+q[3]+'</b></div><div class="sent">'+q[4]+'</div>'}
+function mk(t,s){return s?t.replace(/\*(.+?)\*/g,'<b class="hl">$1</b>'):t.replace(/\*/g,"")}
+function txt(q){var sw=Math.random()<.5,w=Math.random()<.5;G.tx={A:sw?q.s:q.c,B:sw?q.c:q.s,ans:sw==w?"A":"B",sa:sw};
+ return '<div class="q" style="font-size:1.2em">📚 Hora da leitura!<br>Qual texto está no '+(w?'SUPERLATIVO 🏆':'COMPARATIVO ⚖️')+'?</div><div class="box" id="ta"><b>Texto A</b><br>'+mk(G.tx.A,0)+'</div><div class="box" id="tb"><b>Texto B</b><br>'+mk(G.tx.B,0)+'</div><div class="opts two"><button class="opt" onclick="ptxt(this,\'A\')">Texto A</button><button class="opt" onclick="ptxt(this,\'B\')">Texto B</button></div>'}
+function ptxt(b,v){var t=G.tx,ok=(v==t.ans),all=document.querySelectorAll(".opt");
+ all.forEach(function(x){x.disabled=true});b.classList.add(ok?"ok":"no");
+ if(!ok)all.forEach(function(x){if(x.getAttribute("onclick").indexOf("'"+t.ans+"'")>0)x.classList.add("ok")});
+ document.getElementById("ta").innerHTML="<b>Texto A: "+(t.sa?"🏆 superlativo":"⚖️ comparativo")+"</b><br>"+mk(t.A,1);
+ document.getElementById("tb").innerHTML="<b>Texto B: "+(t.sa?"⚖️ comparativo":"🏆 superlativo")+"</b><br>"+mk(t.B,1);
+ res(ok,"Procure o than: ele só aparece no comparativo!")}
+function end(){
+ var p=G.s/G.q.length,n=p>=.9?3:p>=.6?2:p>=.3?1:0;stars[G.id]=Math.max(stars[G.id]||0,n);
+ app.innerHTML=tb(100)+'<div class="card"><div class="big">'+(n==3?"🏆":n>0?"🎈":"💪")+'</div><h2>'+(n==3?"Incrível!":n>0?"Muito bom!":"Vamos tentar de novo!")+'</h2><div class="q">Você acertou '+G.s+' de '+G.q.length+'</div><div class="big">'+("⭐".repeat(n)||"🌱")+'</div><button class="btn" onclick="start()">Jogar de novo 🔁</button> <button class="btn" style="background:var(--p)" onclick="menu()">🏠 Menu</button></div>'}
+menu();
+</script></body></html>
